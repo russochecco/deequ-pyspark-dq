@@ -8,7 +8,7 @@ In modern data architectures, silent data corruption can derail downstream analy
 
 The application ingests raw Electric Vehicle data, profiles the data profile dynamically, runs strict constraint validation checks, and performs **conditional data routing** based on the data health score:
 * **Pass:** Clean data is written out to an optimized, partitioned Parquet storage layer.
-* **Fail:** Invalid batches are isolated to prevent downstream contamination, logging exact constraint violations.
+* **Fail:** Invalid batches bypass production storage entirely; the application halts processing and logs the exact constraint violations directly to `stdout` for troubleshooting.
 
 
 ## What is Deequ?
@@ -27,9 +27,9 @@ The application ingests raw Electric Vehicle data, profiles the data profile dyn
 1. **Ingestion & Schema Enforcement:** Loads raw CSV data while enforcing a structured Spark schema safely.
 2. **Exploratory Data Profiling:** Computes baseline advanced statistics (completeness, data types) across columns using the `ColumnProfilerRunner`.
 3. **Data Quality Suite Validation:** Executes multiple verification checks simultaneously using PyDeequ's engine.
-4. **Conditional Processing (Silver/Quarantine Zone):** 
-   * **Success:** Triggers a dynamic multi-column partition write format.
-   * **Failure:** Triggers logic isolating rows and surfacing exact assertion warnings.
+4. **Conditional Processing (Clean Zone / Error Logging):** 
+   * **Success:** Triggers a dynamic multi-column partition write format to the clean zone.
+   * **Failure:** Bypasses all storage steps entirely, isolating the problem in-memory and surfacing exact assertion warnings to the console.
 
 ### Architecture Design & Components
 
@@ -47,9 +47,9 @@ The architecture follows a classic **decoupled, data-driven validation pattern**
 * **Distributed Profiling Engine:** Data transitions into the `ColumnProfilerRunner` framework, calculating metadata footprints like completeness, data distribution, and estimated data types natively without edge memory constraints.
 * **Constraint Evaluation Engine:** Parallelized evaluation matrices process target datasets via a `VerificationSuite`. The engine converts your Python criteria into highly optimized Spark aggregation jobs executed horizontally across the cluster environment.
 
-#### 3. Conditional Storage & Partitioning Routing
+#### 3. Conditional Storage & Audit Routing
 * **Optimized Silver/Gold Output:** If all threshold matrices cross validation requirements seamlessly, data streams are persisted as compressed **Apache Parquet files**. Records are physically arranged and indexed based on high-order dimension groupings (`ModelYear` and `Make`) to dramatically speed up analytical querying downstream.
-* **Fault Isolation (Quarantine Route):** Any batch generating runtime assertions fails the constraint threshold and bypasses storage targets. It isolates bad records instantly to secure reporting layers from upstream anomalies while throwing actionable alerts into stdout logs.
+* **Fault Logging (No Storage Route):** Any batch generating runtime assertions fails the constraint threshold and bypasses storage targets completely. It drops the execution flow before writing files to secure reporting layers from upstream anomalies, throwing actionable alerts into stdout logs instead.
 
 
 ## Technical Stack
@@ -106,7 +106,7 @@ The project uses the *Electric Vehicle Population Data* domain to replicate real
 This file mimics an unvetted batch containing silent operational data anomalies. Feeding this straight to analytics pipelines would poison metrics due to:
 * **Constraint Violations:** Out-of-bounds metrics in `ElectricRange` (e.g., legacy test values or manual insertion spikes reaching `450`).
 * **Completeness Failures:** Corrupted geographical rows missing fundamental indexing keys across `City`, `State`, and `County`.
-* **Pipeline Action:** Processing this file intentionally triggers the **Quarantine Zone routing**, preventing the script from outputting a final production Parquet target.
+* **Pipeline Action:** Processing this file intentionally triggers a validation failure state. It prevents the script from creating or outputting a final production Parquet target, routing error summaries directly to the console logs.
 
 ### 2. `Electric_Vehicle_Population_Data_Fixed.csv` (Cleansed / Reference Dataset)
 This file represents the remediated, structurally verified equivalent where anomalies have been filtered or patched upstream:
@@ -147,7 +147,7 @@ This layout optimizes querying performance for downstream analytical aggregation
 The system uses structured logging to provide clear observability into pipeline runs:
 
 * **Profiling Auditing Output Example:**
-<pre>
+```text
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ElectricVehicleType | Completeness: 1.0 | DataType: String
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ElectricRange | Completeness: 0.9999814994338827 | DataType: Integral
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: VIN | Completeness: 1.0 | DataType: String
@@ -156,10 +156,10 @@ The system uses structured logging to provide clear observability into pipeline 
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ModelYear | Completeness: 1.0 | DataType: Integral
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: City | Completeness: 0.9999629988677654 | DataType: String
 26/10/17 18:51:20 INFO DeequPySparkDQ: Column: State | Completeness: 1.0 | DataType: String
-</pre>
+```
 
 * **Failure Route Output Example:**
-<pre>
+```text
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
 |check         |constraint                                                                                                             |constraint_status|constraint_message                                                   |
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
@@ -168,13 +168,14 @@ The system uses structured logging to provide clear observability into pipeline 
 |DeequPySparkDQ|CompletenessConstraint(Completeness(City,None,None))                                                                   |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
 |DeequPySparkDQ|CompletenessConstraint(Completeness(County,None,None))                                                                 |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
-</pre>
+```
+
 
 ## Automated Unit Testing
 
 To ensure pipeline stability and validate the data routing logic, the repository includes a suite of unit tests built on **pytest**. 
 
-The testing architecture uses a **session-scoped fixture** (`tests/conftest.py`) that spins up a isolated, local Spark engine instance preconfigured with the Amazon Deequ Java dependencies. This allows tests to run rapidly in memory without restarting JVM containers repeatedly.
+The testing architecture uses a **session-scoped fixture** (`tests/conftest.py`) that spins up an isolated, local Spark engine instance preconfigured with the Amazon Deequ Java dependencies. This allows tests to run rapidly in memory without restarting JVM containers repeatedly.
 
 The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`:
 1. **`test_pipeline_passes_with_clean_data`**: Confirms that perfect records achieve a `Success` validation status block.
@@ -185,29 +186,22 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 ## How To Run
 
 1. **Clone the repository:**
-<div>
 <pre>
 git clone git@github.com:russochecco/deequ-pyspark-dq.git
 cd deequ-pyspark-dq
 </pre>
-</div>
 
 2. **Install project environment dependencies using Poetry:**
-<div>
 <pre>
 poetry install
 </pre>
-</div>
 
 3. **Run the automated unit test suite:**
-<div>
 <pre>
 poetry run pytest tests/ -v
 </pre>
-</div>
 
 4. **Execute the production pipeline modules:**
-<div>
 <pre>
 # For testing the success branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
@@ -217,5 +211,3 @@ poetry run python src/deequ_pyspark_dq/pipeline.py<br>
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
 poetry run python src/deequ_pyspark_dq/pipeline.py
 </pre>
-</div>
-

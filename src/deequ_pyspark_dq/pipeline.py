@@ -46,7 +46,7 @@ if __name__ == "__main__":
         .csv(CSV_SOURCE_PATH, schema=SCHEMA)
     )
 
-    # Step 1: Data Profiling
+    # Data Profiling
     profile_result = (
         ColumnProfilerRunner(spark)
         .onData(df)
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     for col, profile in profile_result.profiles.items():
         logger.info(f"Column: {col} | Completeness: {profile.completeness} | DataType: {profile.dataType}")
 
-    # Step 2: Define constraints and verify data
+    # Define constraints
     check = (
         Check(spark, CheckLevel.Error, APP_NAME)
         .satisfies("ElectricRange >= 0 and ElectricRange < 400", "Valid ElectricRange value")
@@ -66,6 +66,7 @@ if __name__ == "__main__":
         .isComplete("County")
     )
 
+    # Verify data
     verification_result = (
         VerificationSuite(spark)
         .onData(df)
@@ -73,12 +74,9 @@ if __name__ == "__main__":
         .run()
     )
 
-    # Step 3: Process the results to identify errors
-    check_results_df = VerificationResult.checkResultsAsDataFrame(spark, verification_result)
-
-    # Step 4: Conditional routing based on pipeline status
+    # Conditional routing based on pipeline status
     if verification_result.status == "Success":
-        logger.info("Data quality checks passed! Writing data to partitioned Parquet layer...")
+        logger.info("Data quality checks passed! Writing data to partitioned Parquet...")
 
         (
             df.repartition("ModelYear", "Make")
@@ -88,6 +86,9 @@ if __name__ == "__main__":
         )
     else:
         logger.error("Data quality checks failed!")
+
+        # Process and show the errors
+        check_results_df = VerificationResult.checkResultsAsDataFrame(spark, verification_result)
 
         (
             check_results_df.select("check", "constraint", "constraint_status", "constraint_message")
