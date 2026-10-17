@@ -119,10 +119,8 @@ This file represents the remediated, structurally verified equivalent where anom
 
 The application abstracts critical configuration settings to environment variables, making it cloud-native and ready for orchestration tools like Apache Airflow or AWS Glue:
 
-<pre>
-export CSV_SOURCE_PATH="/path/to/your/input/dataset.csv"
-export PARQUET_OUTPUT_PATH="/path/to/your/output/storage/"
-</pre>
+<pre><code>export CSV_SOURCE_PATH="/path/to/your/input/dataset.csv"
+export PARQUET_OUTPUT_PATH="/path/to/your/output/storage/"</code></pre>
 
 
 ## Production Output Strategy
@@ -186,28 +184,19 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 ## How To Run
 
 1. **Clone the repository:**
-<pre>
-git clone git@github.com:russochecco/deequ-pyspark-dq.git
-cd deequ-pyspark-dq
-</pre>
+<pre><code>git clone git@github.com:russochecco/deequ-pyspark-dq.git
+cd deequ-pyspark-dq</code></pre>
 
 2. **Install project environment dependencies using Poetry:**
-<pre>
-poetry install
-</pre>
+<pre><code>poetry install</code></pre>
 
 3. **Run the automated unit test suite:**
-<pre>
-poetry run pytest tests/ -v
-</pre>
+<pre><code>poetry run pytest tests/ -v</code></pre>
 
 4. **Execute the production pipeline modules:**
-<pre>
-# For testing the success branch:
+<pre><code># For testing the success branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
 export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
-poetry run python src/deequ_pyspark_dq/pipeline.py<br>
-# For testing the failure/quarantine isolation branch:
+poetry run python src/deequ_pyspark_dq/pipeline.py<br><br># For testing the failure/quarantine isolation branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
-poetry run python src/deequ_pyspark_dq/pipeline.py
-</pre>
+poetry run python src/deequ_pyspark_dq/pipeline.py</code></pre>
