@@ -148,14 +148,14 @@ The system uses structured logging to provide clear observability into pipeline 
 
 * **Profiling Auditing Output Example:**
 <pre>
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: ElectricVehicleType | Completeness: 1.0 | DataType: String
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: ElectricRange | Completeness: 0.9999814994338827 | DataType: Integral
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: VIN | Completeness: 1.0 | DataType: String
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: Make | Completeness: 1.0 | DataType: String
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: County | Completeness: 0.9999629988677654 | DataType: String
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: ModelYear | Completeness: 1.0 | DataType: Integral
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: City | Completeness: 0.9999629988677654 | DataType: String
-26/10/17 14:35:22 INFO DeequPySparkDQ: Column: State | Completeness: 1.0 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ElectricVehicleType | Completeness: 1.0 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ElectricRange | Completeness: 0.9999814994338827 | DataType: Integral
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: VIN | Completeness: 1.0 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: Make | Completeness: 1.0 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: County | Completeness: 0.9999629988677654 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: ModelYear | Completeness: 1.0 | DataType: Integral
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: City | Completeness: 0.9999629988677654 | DataType: String
+26/10/17 18:51:20 INFO DeequPySparkDQ: Column: State | Completeness: 1.0 | DataType: String
 </pre>
 
 * **Failure Route Output Example:**
@@ -166,18 +166,8 @@ The system uses structured logging to provide clear observability into pipeline 
 |DeequPySparkDQ|ComplianceConstraint(Compliance(Valid ElectricRange value,ElectricRange >= 0 and ElectricRange < 400,None,List(),None))|Failure          |Value: 0.9999814994338827 does not meet the constraint requirement!  |
 |DeequPySparkDQ|UniquenessConstraint(Uniqueness(List(VIN),None,None))                                                                  |Failure          |Value: 0.011255744425779429 does not meet the constraint requirement!|
 |DeequPySparkDQ|CompletenessConstraint(Completeness(City,None,None))                                                                   |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
-|DeequPySparkDQ|CompletenessConstraint(Completeness(State,None,None))                                                                  |Success          |                                                                     |
 |DeequPySparkDQ|CompletenessConstraint(Completeness(County,None,None))                                                                 |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
-26/10/17 14:35:22 WARNING DeequPySparkDQ: Data quality checks failed! Routing data to quarantine zone for manual review.
-+--------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
-|check         |check_level|check_status|constraint                                                                                                             |constraint_status|constraint_message                                                   |
-+--------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
-|DeequPySparkDQ|Error      |Error       |ComplianceConstraint(Compliance(Valid ElectricRange value,ElectricRange >= 0 and ElectricRange < 400,None,List(),None))|Failure          |Value: 0.9999814994338827 does not meet the constraint requirement!  |
-|DeequPySparkDQ|Error      |Error       |UniquenessConstraint(Uniqueness(List(VIN),None,None))                                                                  |Failure          |Value: 0.011255744425779429 does not meet the constraint requirement!|
-|DeequPySparkDQ|Error      |Error       |CompletenessConstraint(Completeness(City,None,None))                                                                   |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
-|DeequPySparkDQ|Error      |Error       |CompletenessConstraint(Completeness(County,None,None))                                                                 |Failure          |Value: 0.9999629988677654 does not meet the constraint requirement!  |
-+--------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
 </pre>
 
 ## Automated Unit Testing

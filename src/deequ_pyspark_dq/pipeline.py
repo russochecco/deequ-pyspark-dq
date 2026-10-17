@@ -73,13 +73,8 @@ if __name__ == "__main__":
         .run()
     )
 
-    # Step 3: Process the results
+    # Step 3: Process the results to identify errors
     check_results_df = VerificationResult.checkResultsAsDataFrame(spark, verification_result)
-
-    (
-        check_results_df.select("check", "constraint", "constraint_status", "constraint_message")
-        .show(truncate=False)
-    )
 
     # Step 4: Conditional routing based on pipeline status
     if verification_result.status == "Success":
@@ -92,10 +87,11 @@ if __name__ == "__main__":
             .parquet(PARQUET_OUTPUT_PATH)
         )
     else:
-        logger.warning("Data quality checks failed! Routing data to quarantine zone.")
+        logger.error("Data quality checks failed!")
 
         (
-            check_results_df.filter(check_results_df.constraint_status != "Success")
+            check_results_df.select("check", "constraint", "constraint_status", "constraint_message")
+            .filter(check_results_df.constraint_status != "Success")
             .show(truncate=False)
         )
 
