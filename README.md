@@ -148,7 +148,7 @@ The system uses structured logging to provide clear observability into pipeline 
 
 * **Profiling Auditing Output Example:**
 <pre>
-26/10/17 14:35:22 INFO DeequPySparkDQ: ------ Profile report ------
+26/10/17 14:35:22 INFO DeequPySparkDQ: ------ Profile ------
 26/10/17 14:35:22 INFO DeequPySparkDQ: Column: ElectricVehicleType | Completeness: 1.0 | DataType: String
 26/10/17 14:35:22 INFO DeequPySparkDQ: Column: ElectricRange | Completeness: 0.9999814994338827 | DataType: Integral
 26/10/17 14:35:22 INFO DeequPySparkDQ: Column: VIN | Completeness: 1.0 | DataType: String
@@ -161,7 +161,7 @@ The system uses structured logging to provide clear observability into pipeline 
 
 * **Failure Route Output Example:**
 <pre>
-26/10/17 14:35:22 INFO DeequPySparkDQ: ------ Verification report ------
+26/10/17 14:35:22 INFO DeequPySparkDQ: ------ Verification ------
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
 |check         |constraint                                                                                                             |constraint_status|constraint_message                                                   |
 +--------------+-----------------------------------------------------------------------------------------------------------------------+-----------------+---------------------------------------------------------------------+
