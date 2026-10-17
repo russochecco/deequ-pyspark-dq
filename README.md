@@ -198,6 +198,7 @@ cd deequ-pyspark-dq</code></pre>
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
 export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
 poetry run python src/deequ_pyspark_dq/pipeline.py<br>
+
 # For testing the failure/quarantine isolation branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
 poetry run python src/deequ_pyspark_dq/pipeline.py</code></pre>
