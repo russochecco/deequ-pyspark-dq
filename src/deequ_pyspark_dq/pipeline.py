@@ -53,7 +53,6 @@ if __name__ == "__main__":
         .run()
     )
 
-    logger.info("------ Profile report ------")
     for col, profile in profile_result.profiles.items():
         logger.info(f"Column: {col} | Completeness: {profile.completeness} | DataType: {profile.dataType}")
 
@@ -77,8 +76,10 @@ if __name__ == "__main__":
     # Step 3: Process the results
     check_results_df = VerificationResult.checkResultsAsDataFrame(spark, verification_result)
 
-    logger.info("------ Verification results ------")
-    check_results_df.select("check", "constraint", "constraint_status", "constraint_message").show(truncate=False)
+    (
+        check_results_df.select("check", "constraint", "constraint_status", "constraint_message")
+        .show(truncate=False)
+    )
 
     # Step 4: Conditional routing based on pipeline status
     if verification_result.status == "Success":
