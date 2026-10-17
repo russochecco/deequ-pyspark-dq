@@ -196,36 +196,38 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 
 ## How To Run
 
-<ol>
-<li><b>Clone the repository:</b>
+1. **Clone the repository:**
+<div>
 <pre>
 git clone git@github.com:russochecco/deequ-pyspark-dq.git
 cd deequ-pyspark-dq
 </pre>
-</li>
+</div>
 
-<li><b>Install project environment dependencies using Poetry:</b>
+2. **Install project environment dependencies using Poetry:**
+<div>
 <pre>
 poetry install
 </pre>
-</li>
+</div>
 
-<li><b>Run the automated unit test suite:</b>
+3. **Run the automated unit test suite:**
+<div>
 <pre>
 poetry run pytest tests/ -v
 </pre>
-</li>
+</div>
 
-<li><b>Execute the production pipeline modules:</b>
+4. **Execute the production pipeline modules:**
+<div>
 <pre>
-# For testing the success branch:
+\# For testing the success branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
 export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
-poetry run python src/deequ_pyspark_dq/pipeline.py  
-
-# For testing the failure/quarantine isolation branch:
+poetry run python src/deequ_pyspark_dq/pipeline.py<br>
+\# For testing the failure/quarantine isolation branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
 poetry run python src/deequ_pyspark_dq/pipeline.py
 </pre>
-</li>
-</ol>
+</div>
+
