@@ -1,0 +1,25 @@
+[project]
+name = "deequ-pyspark-dq"
+version = "0.1.0"
+description = "An automated Data Quality Pipeline using PySpark and AWS PyDeequ"
+authors = [
+    { name = "Francesco Russo", email = "russo.checco@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.12,<4"
+dependencies = [
+    "pyspark[sql]==3.5.4",
+    "pydeequ>=1.7.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0"
+]
+
+[tool.poetry]
+packages = [{ include = "deequ_pyspark_dq", from = "src" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

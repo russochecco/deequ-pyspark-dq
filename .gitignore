@@ -1,0 +1,9 @@
+.idea
+.venv
+.submit*
+poetry.lock
+__pycache__/
+.DS_Store
+images/.DS_Store
+src/.DS_Store
+output
