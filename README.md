@@ -119,10 +119,10 @@ This file represents the remediated, structurally verified equivalent where anom
 
 The application abstracts critical configuration settings to environment variables, making it cloud-native and ready for orchestration tools like Apache Airflow or AWS Glue:
 
-```bash
+<pre>
 export CSV_SOURCE_PATH="/path/to/your/input/dataset.csv"
 export PARQUET_OUTPUT_PATH="/path/to/your/output/storage/"
-```
+</pre>
 
 
 ## Production Output Strategy
