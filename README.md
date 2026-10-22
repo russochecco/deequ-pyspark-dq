@@ -91,8 +91,9 @@ The project follows a production-ready, modular Poetry package layout:
 │   └── deequ_pyspark_dq/
 │       ├── __init__.py
 │       └── pipeline.py                              # Core PySpark execution pipeline driver script
-└── tests/                                           # Test orchestration suite 
-    ├── __init__.py
+└── tests/                                           # Test orchestration suite
+    └──deequ_pyspark_dq 
+        ├── __init__.py
     ├── conftest.py                                  # Shared, session-scoped local Spark & PyDeequ fixture
     └── test_pipeline.py                             # Unit tests for clean, out-of-bounds, and duplicate data
 ```
