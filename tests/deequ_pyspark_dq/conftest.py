@@ -2,7 +2,8 @@ import os
 import pytest
 from pyspark.sql import SparkSession
 
-os.environ["SPARK_VERSION"] = "3.5"
+os.environ["SPARK_VERSION"] = "4.1"
+
 
 @pytest.fixture(scope="session")
 def spark_session():

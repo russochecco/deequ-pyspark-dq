@@ -8,8 +8,9 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12,<4"
 dependencies = [
-    "pyspark[sql]==3.5.4",
-    "pydeequ>=1.7.0",
+    "pyspark[sql]==4.2.0",
+    "pandas<3.0.0",
+    "pydeequ (>=1.7.0,<2.0.0)",
 ]
 
 [dependency-groups]

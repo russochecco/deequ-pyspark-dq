@@ -1,6 +1,6 @@
 # Automated Data Quality Pipeline with PySpark and PyDeequ
 
-An end-to-end Python-based data pipeline demonstrating automated **Data Profiling**, programmatic **Data Quality (DQ) validation**, and **conditional routing** using **PySpark** and AWS **PyDeequ**.
+An end-to-end Python-based data pipeline demonstrating automated **Data Profiling**, programmatic **Data Quality (DQ) validation**, and **conditional routing** using **PySpark 4.2.0** and AWS **PyDeequ**.
 
 
 ## Project Overview
@@ -172,6 +172,11 @@ The system uses structured logging to provide clear observability into pipeline 
 
 ## Automated Unit Testing
 
+To ensure pipeline stability and validate the data routing logic, the repository includes a suite of unit tests built on pytest.
+The testing architecture uses a session-scoped fixture (tests/conftest.py) that spins up an isolated, local Spark 4.2.0 engine instance.
+
+>⚠️ PySpark 4.2.0 Note: Ensure your conftest.py explicitly passes the correct Scala 2.13-compatible Deequ fat-JAR coordinates or path inside your .config("spark.jars.packages", ...) block to prevent JVM/Scala version mismatches.
+
 To ensure pipeline stability and validate the data routing logic, the repository includes a suite of unit tests built on **pytest**. 
 
 The testing architecture uses a **session-scoped fixture** (`tests/conftest.py`) that spins up an isolated, local Spark engine instance preconfigured with the Amazon Deequ Java dependencies. This allows tests to run rapidly in memory without restarting JVM containers repeatedly.
@@ -182,7 +187,7 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 3. **`test_pipeline_fails_with_duplicate_vin`**: Verifies that primary key identity collisions (non-unique `VIN` rows) are intercepted cleanly.
 
 
-## How To Run
+### How To Run
 
 1. **Clone the repository:**
 <pre><code>git clone git@github.com:russochecco/deequ-pyspark-dq.git
@@ -198,8 +203,21 @@ cd deequ-pyspark-dq</code></pre>
 <pre><code># For testing the success branch:
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
 export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
-poetry run python src/deequ_pyspark_dq/pipeline.py<br>
+poetry run python src/deequ_pyspark_dq/pipeline.py
+</pre></code>
 
-# For testing the failure/quarantine isolation branch:
+
+### For testing the success branch:
+
+<pre><code>
+export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
+export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
+poetry run python src/deequ_pyspark_dq/pipeline.py
+</pre></code>
+
+### For testing the failure/quarantine isolation branch:
+
+<pre><code>
 export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
-poetry run python src/deequ_pyspark_dq/pipeline.py</code></pre>
+poetry run python src/deequ_pyspark_dq/pipeline.py
+</code></pre>
