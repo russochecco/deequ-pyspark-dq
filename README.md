@@ -120,8 +120,10 @@ This file represents the remediated, structurally verified equivalent where anom
 
 The application abstracts critical configuration settings to environment variables, making it cloud-native and ready for orchestration tools like Apache Airflow or AWS Glue:
 
-<pre><code>export CSV_SOURCE_PATH="/path/to/your/input/dataset.csv"
-export PARQUET_OUTPUT_PATH="/path/to/your/output/storage/"</code></pre>
+```bash
+export CSV_SOURCE_PATH="/path/to/your/input/dataset.csv"
+export PARQUET_OUTPUT_PATH="/path/to/your/output/storage/"
+```
 
 
 ## Production Output Strategy
@@ -190,22 +192,33 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 ## How To Run
 
 1. **Clone the repository:**
-<pre><code>git clone git@github.com:russochecco/deequ-pyspark-dq.git
-cd deequ-pyspark-dq</code></pre>
+
+	```bash
+	git clone git@github.com:russochecco/deequ-pyspark-dq.git
+	cd deequ-pyspark-dq
+	```
 
 2. **Install project environment dependencies using Poetry:**
-<pre><code>poetry install</code></pre>
+
+	```bash
+	poetry install
+	```
 
 3. **Run the automated unit test suite:**
-<pre><code>poetry run pytest tests/ -v</code></pre>
+
+	```bash
+	poetry run pytest tests/ -v
+	```
 
 4. **Execute the production pipeline modules:**
-<pre><code># For testing the success branch:
-export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
-export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
-poetry run python src/deequ_pyspark_dq/pipeline.py
+	
+	```bash
+	# For testing the success branch:
+	export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data_Fixed.csv"
+	export PARQUET_OUTPUT_PATH="data/output/silver_ev_table"
+	poetry run python src/deequ_pyspark_dq/pipeline.py
 
-# For testing the failure/quarantine isolation branch:
-export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
-poetry run python src/deequ_pyspark_dq/pipeline.py
-</code></pre>
+	# For testing the failure/quarantine isolation branch:
+	export CSV_SOURCE_PATH="data/Electric_Vehicle_Population_Data.csv"
+	poetry run python src/deequ_pyspark_dq/pipeline.py
+	```
