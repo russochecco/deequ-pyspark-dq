@@ -208,7 +208,7 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 3. **Run the automated unit test suite:**
 
 	```bash
-	poetry run pytest tests/ -v
+    poetry run python -m pytest tests/ -v
 	```
 
 4. **Execute the production pipeline modules:**
