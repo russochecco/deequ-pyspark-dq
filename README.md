@@ -1,6 +1,6 @@
 # Automated Data Quality Pipeline with PySpark and PyDeequ
 
-An end-to-end Python-based data pipeline demonstrating automated **Data Profiling**, programmatic **Data Quality (DQ) validation**, and **conditional routing** using **PySpark 4.2.0** and AWS **PyDeequ**.
+An end-to-end Python-based data pipeline demonstrating automated **Data Profiling**, programmatic **Data Quality (DQ) validation**, and **conditional routing** using **PySpark 4.1.3** and AWS **PyDeequ**.
 
 
 ## Project Overview
@@ -54,7 +54,7 @@ The architecture follows a classic **decoupled, data-driven validation pattern**
 
 ## Technical Stack
 * **Language:** Python
-* **Data Processing Framework:** Apache Spark (PySpark v3.x)
+* **Data Processing Framework:** Apache Spark (PySpark 4.1.3)
 * **Data Quality Framework:** AWS PyDeequ (Python API for Amazon Deequ)
 * **Storage Formats:** Comma-Separated Values (CSV), Apache Parquet
 
@@ -92,10 +92,11 @@ The project follows a production-ready, modular Poetry package layout:
 │       ├── __init__.py
 │       └── pipeline.py                              # Core PySpark execution pipeline driver script
 └── tests/                                           # Test orchestration suite
+    ├── __init__.py
     └──deequ_pyspark_dq 
         ├── __init__.py
-    ├── conftest.py                                  # Shared, session-scoped local Spark & PyDeequ fixture
-    └── test_pipeline.py                             # Unit tests for clean, out-of-bounds, and duplicate data
+        ├── conftest.py                              # Shared, session-scoped local Spark & PyDeequ fixture
+        └── test_pipeline.py                         # Unit tests for clean, out-of-bounds, and duplicate data
 ```
 
 
@@ -175,9 +176,9 @@ The system uses structured logging to provide clear observability into pipeline 
 ## Automated Unit Testing
 
 To ensure pipeline stability and validate the data routing logic, the repository includes a suite of unit tests built on pytest.
-The testing architecture uses a session-scoped fixture (tests/conftest.py) that spins up an isolated, local Spark 4.2.0 engine instance.
+The testing architecture uses a session-scoped fixture (tests/conftest.py) that spins up an isolated, local Spark 4.1.3 engine instance.
 
->⚠️ PySpark 4.2.0 Note: Ensure your conftest.py explicitly passes the correct Scala 2.13-compatible Deequ fat-JAR coordinates or path inside your .config("spark.jars.packages", ...) block to prevent JVM/Scala version mismatches.
+>⚠️ PySpark 4.1.3 Note: Ensure your conftest.py explicitly passes the correct Scala 2.13-compatible Deequ fat-JAR coordinates or path inside your .config("spark.jars.packages", ...) block to prevent JVM/Scala version mismatches.
 
 To ensure pipeline stability and validate the data routing logic, the repository includes a suite of unit tests built on **pytest**. 
 
