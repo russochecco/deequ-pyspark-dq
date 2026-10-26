@@ -187,7 +187,7 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 3. **`test_pipeline_fails_with_duplicate_vin`**: Verifies that primary key identity collisions (non-unique `VIN` rows) are intercepted cleanly.
 
 
-### How To Run
+## How To Run
 
 1. **Clone the repository:**
 <pre><code>git clone git@github.com:russochecco/deequ-pyspark-dq.git
