@@ -76,27 +76,26 @@ The following automated validation checks are evaluated dynamically on the incom
 
 The project follows a production-ready, modular Poetry package layout:
 
-
 ```text
 .
 ├── README.md
 ├── data/
-│   ├── Electric_Vehicle_Population_Data.csv         # Raw incoming dataset with structural & value anomalies
-│   └── Electric_Vehicle_Population_Data_Fixed.csv   # Cleansed dataset ensuring 100% PyDeequ verification pass
+│   ├── Electric_Vehicle_Population_Data.csv
+│   └── Electric_Vehicle_Population_Data_Fixed.csv
 ├── images/
-│   └── blueprint.png                                # End-to-end pipeline architecture diagram
-├── poetry.lock                                      # Pinlocked dependency tree ledger
-├── pyproject.toml                                   # Poetry build system and application configurations
+│   └── blueprint.png
+├── poetry.lock
+├── pyproject.toml
 ├── src/
 │   └── deequ_pyspark_dq/
 │       ├── __init__.py
-│       └── pipeline.py                              # Core PySpark execution pipeline driver script
-└── tests/                                           # Test orchestration suite
+│       └── pipeline.py
+└── tests/
     ├── __init__.py
-    └──deequ_pyspark_dq 
+    └── deequ_pyspark_dq/
         ├── __init__.py
-        ├── conftest.py                              # Shared, session-scoped local Spark & PyDeequ fixture
-        └── test_pipeline.py                         # Unit tests for clean, out-of-bounds, and duplicate data
+        ├── conftest.py
+        └── test_pipeline.py
 ```
 
 
@@ -204,7 +203,7 @@ The suite asserts three vital pipeline scenarios inside `tests/test_pipeline.py`
 	```bash
 	poetry install
 	```
-
+ 
 3. **Run the automated unit test suite:**
 
 	```bash
