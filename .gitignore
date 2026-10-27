@@ -32,6 +32,7 @@ ENV/
 **/.DS_Store
 poetry.lock
 dist
+output/
 
 # Spark submit tracking logs
 .submit*
