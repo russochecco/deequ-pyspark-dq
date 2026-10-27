@@ -36,7 +36,7 @@ The application ingests raw Electric Vehicle data, profiles the data profile dyn
 The architecture follows a classic **decoupled, data-driven validation pattern** processed completely in-memory using distributed computing clusters. It isolates computational heavy-lifting from structural storage layers:
 
 <div align="center">
-  <img src="images/blueprint.png" alt="High-Level Blueprint" width="50%">
+  <img src="images/blueprint.png" alt="High-Level Blueprint" width="60%">
 </div>
 
 #### 1. Decoupled Ingestion & Structural Typing
